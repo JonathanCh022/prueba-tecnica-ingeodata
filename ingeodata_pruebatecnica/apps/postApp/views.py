@@ -15,6 +15,6 @@ class MyFormView(View):
         if form.is_valid():
             try:
                 form.save()
-            except:
+            finally:
                 pass
             return HttpResponseRedirect('/show')
