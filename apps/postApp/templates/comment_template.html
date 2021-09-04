@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-4">
+     <h4 class="text-center alert alert-info">Add New Comment</h4>
+        <form action="{% url 'add_comment' %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="btn btn-success" value="Add a Comment">
+        </form>
+    </div>
+
+    <div class="col-sm-7 offset-1">
+        <h4 class="text-center alert alert-info"> Show Comments </h4>
+    {% if comments %}
+          {% for cm in comments %}
+            <div class="card m-1" style="width: 100%;">
+                <div class="card-body">
+                    <h6 class="card-title">Post:
+                        {% for coment in cm.comment.all %}
+                            {{ coment }}
+                        {% endfor %}
+                    </h6>
+                    <h6 class="card-title">Usuario:
+                        {% for user in cm.user.all %}
+                            {{ user }}
+                        {% endfor %}
+                    </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ pst.pub_date }}</h6>
+                    <p class="card-text">{{ cm.content }}</p>
+                    <a href="{% url 'update_comment' cm.id%}" class="card-link btn btn-warning">Edit</a>
+                    <form action="{% url 'delete_comment' cm.id%}" method="POST" class="d-inline"> {% csrf_token %}
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                    </form>
+                </div>
+
+            </div>
+          {% endfor %}
+
+    {% else %}
+        <h4 class="text-center alert alert-warning">"No Comments"</h4>
+    {% endif %}
+    </div>
+</div>
+{% endblock content %}
